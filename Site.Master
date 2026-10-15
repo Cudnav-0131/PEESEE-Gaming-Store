@@ -1,0 +1,306 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="PEESEE_GAMING.SiteMaster" %>
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head runat="server">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%: Page.Title %> - My ASP.NET Application</title>
+
+    <asp:PlaceHolder runat="server">
+        <%: Scripts.Render("~/bundles/modernizr") %>
+    </asp:PlaceHolder>
+
+    <webopt:bundlereference runat="server" path="~/Content/css" />
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <link href="<%= ResolveUrl("~/Content/product-detail.css") %>" rel="stylesheet" />
+</head>
+<link href="Content/category-page.css" rel="stylesheet" />
+<body>
+    <form runat="server">
+        <asp:ScriptManager runat="server">
+            <Scripts>
+                <%--To learn more about bundling scripts in ScriptManager see https://go.microsoft.com/fwlink/?LinkID=301884 --%>
+                <%--Framework Scripts--%>
+                <asp:ScriptReference Name="MsAjaxBundle" />
+                <asp:ScriptReference Name="jquery" />
+                <asp:ScriptReference Name="WebForms.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebForms.js" />
+                <asp:ScriptReference Name="WebUIValidation.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebUIValidation.js" />
+                <asp:ScriptReference Name="MenuStandards.js" Assembly="System.Web" Path="~/Scripts/WebForms/MenuStandards.js" />
+                <asp:ScriptReference Name="GridView.js" Assembly="System.Web" Path="~/Scripts/WebForms/GridView.js" />
+                <asp:ScriptReference Name="DetailsView.js" Assembly="System.Web" Path="~/Scripts/WebForms/DetailsView.js" />
+                <asp:ScriptReference Name="TreeView.js" Assembly="System.Web" Path="~/Scripts/WebForms/TreeView.js" />
+                <asp:ScriptReference Name="WebParts.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebParts.js" />
+                <asp:ScriptReference Name="Focus.js" Assembly="System.Web" Path="~/Scripts/WebForms/Focus.js" />
+                <asp:ScriptReference Name="WebFormsBundle" />
+                <%--Site Scripts--%>
+            </Scripts>
+        </asp:ScriptManager>
+
+        
+        <header class="header">
+            <div class="header-main">
+
+                <!-- LOGO -->
+                <div class="header-left">
+                    <a href="<%= ResolveUrl("~/Default.aspx") %>" class="logo">
+                        <img src="<%= ResolveUrl("~/images/logo-peesee.png") %>"
+                             alt="PEESEE">
+                    </a>
+                </div>
+
+                <!-- DANH MỤC + TÌM KIẾM -->
+                <div class="header-center">
+
+                    <div class="category-menu">
+                        <button type="button"
+                                class="category-btn"
+                                id="category-btn">
+                            ☰
+                            <span>Danh mục</span>
+                        </button>
+
+                        <div class="mega-menu">
+
+                            <div class="mega-column">
+                                <h3>Laptop</h3>
+                                <a href="<%= ResolveUrl("~/Category.aspx?category=laptop") %>">
+                                    Laptop
+                                </a>
+                                <a href="<%= ResolveUrl("~/Category.aspx?category=laptop-gaming") %>">
+                                    Laptop Gaming
+                                </a>
+                            </div>
+
+                            <div class="mega-column">
+                                <h3>PC &amp; Linh kiện</h3>
+                                <a href="<%= ResolveUrl("~/Category.aspx?category=pc-ps") %>">
+                                    PC / PS
+                                </a>
+                                <a href="<%= ResolveUrl("~/Category.aspx?category=components") %>">
+                                    Main / CPU / VGA
+                                </a>
+                                <a href="<%= ResolveUrl("~/Category.aspx?category=case") %>">
+                                    Case
+                                </a>
+                            </div>
+
+                            <div class="mega-column">
+                                <h3>Gaming Gear</h3>
+                                <a href="<%= ResolveUrl("~/Category.aspx?category=keyboard") %>">
+                                    Bàn phím
+                                </a>
+                                <a href="<%= ResolveUrl("~/Category.aspx?category=mouse-mousepad") %>">
+                                    Chuột / Lót chuột
+                                </a>
+                                <a href="<%= ResolveUrl("~/Category.aspx?category=headphone") %>">
+                                    Tai nghe
+                                </a>
+                            </div>
+
+                            <div class="mega-column">
+                                <h3>Thiết bị</h3>
+                                <a href="<%= ResolveUrl("~/Category.aspx?category=monitor") %>">
+                                    Màn hình
+                                </a>
+                                <a href="<%= ResolveUrl("~/Category.aspx?category=speaker-microphone") %>">
+                                    Loa / Micro
+                                </a>
+                                <a href="<%= ResolveUrl("~/Category.aspx?category=chair-desk") %>">
+                                    Ghế / Bàn
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TÌM KIẾM -->
+                    <div class="search-box">
+                        <input type="text"
+                               id="search-input"
+                               placeholder="Tìm kiếm...">
+
+                        <button type="button" id="search-btn">
+                            ⌕
+                        </button>
+                    </div>
+
+                </div>
+
+                <!-- GIỎ HÀNG + TÀI KHOẢN -->
+                <div class="header-right">
+
+                    <a href="<%= ResolveUrl("~/Cart.aspx") %>"
+                       class="cart-btn">
+                        <img src="<%= ResolveUrl("~/images/logo-cart.png") %>"
+                             alt="Giỏ hàng">
+                        <span>Giỏ hàng</span>
+                        <asp:Label ID="lblCartCount"
+                            runat="server"
+                            CssClass="cart-count"
+                            Text="0" />
+                    </a>
+
+                    <asp:PlaceHolder ID="phGuestLogin" runat="server">
+                        <a href="<%= ResolveUrl("~/Login.aspx") %>" class="login-btn">
+                            <img src="<%= ResolveUrl("~/images/logo-user.png") %>"
+                                 alt="Tài khoản" />
+                            <span>Đăng nhập</span>
+                        </a>
+                    </asp:PlaceHolder>
+
+                    <asp:PlaceHolder ID="phUserAccount" runat="server" Visible="false">
+                        <div class="login-user-session">
+                            <asp:LinkButton ID="btnLogout" runat="server"
+                                CssClass="login-btn logout-btn"
+                                OnClick="btnLogout_Click"
+                                CausesValidation="false">
+
+                                <img src="<%= ResolveUrl("~/images/logo-user.png") %>"
+                                     alt="Tài khoản" />
+
+                                <span>Đăng xuất</span>
+                            </asp:LinkButton>
+                        </div>
+                    </asp:PlaceHolder>
+
+                </div>
+
+            </div>
+        </header>
+
+        
+        <div class="container body-content">
+            <asp:ContentPlaceHolder ID="MainContent" runat="server">
+            </asp:ContentPlaceHolder>
+        </div>
+
+        <!-- FOOTER PEESEE -->
+        <footer class="site-footer">
+            <div class="footer-inner">
+
+                <!-- LOGO VÀ MẠNG XÃ HỘI -->
+                <div class="footer-brand-block">
+                    <div class="footer-brand">
+                        <div class="footer-logo-block">
+                            <img src="<%= ResolveUrl("~/images/logo-peesee.png") %>"
+                                 alt="PEESEE">
+                        </div>
+                    </div>
+
+                    <div class="footer-connect">
+                        <p class="footer-title">KẾT NỐI VỚI CHÚNG TÔI</p>
+
+                        <div class="social-list">
+                            <a href="#" aria-label="Facebook">
+                                <img src="<%= ResolveUrl("~/images/facebook.png") %>"
+                                     alt="Facebook">
+                            </a>
+
+                            <a href="#" aria-label="Instagram">
+                                <img src="<%= ResolveUrl("~/images/instagram.png") %>"
+                                     alt="Instagram">
+                            </a>
+
+                            <a href="#" aria-label="Twitter">
+                                <img src="<%= ResolveUrl("~/images/twitter.png") %>"
+                                     alt="Twitter">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TỔNG ĐÀI HỖ TRỢ -->
+                <div class="footer-column">
+                    <h4>TỔNG ĐÀI HỖ TRỢ</h4>
+                    <p>Tư vấn mua hàng<br>1900 1234</p>
+                    <p>Hỗ trợ kỹ thuật, bảo hành<br>1900 5678</p>
+                    <p>Góp ý, khiếu nại<br>1900 9876</p>
+                    <p>Email<br>support@peesee.vn</p>
+                </div>
+
+                <!-- VỀ PEESEE -->
+                <div class="footer-column">
+                    <h4>VỀ PEESEE</h4>
+                    <a href="#">Giới thiệu</a>
+                    <a href="#">Tuyển dụng</a>
+                    <a href="#">Liên hệ</a>
+                </div>
+
+                <!-- CHÍNH SÁCH -->
+                <div class="footer-column">
+                    <h4>CHÍNH SÁCH</h4>
+                    <a href="#">Chính sách bảo hành</a>
+                    <a href="#">Chính sách giao hàng</a>
+                    <a href="#">Chính sách đổi trả</a>
+                    <a href="#">Chính sách bảo mật</a>
+                </div>
+
+                <!-- THÔNG TIN -->
+                <div class="footer-column footer-column--wide">
+                    <h4>THÔNG TIN</h4>
+                    <div class="two-col-links">
+                        <a href="#">Hệ thống cửa hàng</a>
+                        <a href="#">Hướng dẫn mua hàng</a>
+                        <a href="#">Hướng dẫn thanh toán</a>
+                        <a href="#">Hướng dẫn trả góp</a>
+                        <a href="#">Tra cứu địa chỉ bảo hành</a>
+                    </div>
+                </div>
+
+                <!-- THANH TOÁN -->
+                <div class="footer-column footer-column--payments">
+                    <h4>HỖ TRỢ THANH TOÁN</h4>
+
+                    <div class="payment-grid">
+                        <img src="<%= ResolveUrl("~/images/visa.png") %>"
+                             alt="Visa">
+                        <img src="<%= ResolveUrl("~/images/paypal.png") %>"
+                             alt="PayPal">
+                        <img src="<%= ResolveUrl("~/images/momo.png") %>"
+                             alt="MoMo">
+                        <img src="<%= ResolveUrl("~/images/zalo.png") %>"
+                             alt="ZaloPay">
+                    </div>
+                </div>
+
+            </div>
+        </footer>
+
+    </form>
+    <asp:PlaceHolder runat="server">
+        <%: Scripts.Render("~/Scripts/bootstrap.js") %>
+    </asp:PlaceHolder>
+
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const searchInput = document.getElementById("search-input");
+        const searchButton = document.getElementById("search-btn");
+
+        function searchProducts() {
+            const keyword = searchInput.value.trim();
+
+            if (keyword) {
+                window.location.href =
+                    '<%= ResolveUrl("~/Default.aspx") %>?search='
+                    + encodeURIComponent(keyword);
+            }
+        }
+
+        if (searchInput && searchButton) {
+            searchButton.addEventListener("click", function (event) {
+                event.preventDefault();
+                searchProducts();
+            });
+
+            searchInput.addEventListener("keydown", function (event) {
+                if (event.key === "Enter") {
+                    event.preventDefault();
+                    searchProducts();
+                }
+            });
+        }
+    });
+    </script>
+</body>
+</html>

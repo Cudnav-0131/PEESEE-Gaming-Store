@@ -1,0 +1,382 @@
+﻿
+/* ================================
+   PRODUCT DETAIL - PEESEE GAMING
+================================ */
+
+.product-detail-page {
+    min-height: 500px;
+    padding: 35px 20px 50px;
+    background: #f8f9fb;
+    color: #222;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+    .product-detail-page *,
+    .product-detail-page *::before,
+    .product-detail-page *::after {
+        box-sizing: border-box;
+    }
+
+.product-detail-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Khu vực chính */
+
+.product-detail-page .product-detail-main {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 35px;
+    padding: 30px;
+    background: #fff;
+    border: 1px solid #edf0f4;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+/* Ảnh sản phẩm */
+
+.product-detail-page .product-detail-image {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 0;
+    min-height: 400px;
+    padding: 20px;
+}
+
+    .product-detail-page .product-detail-image img {
+        display: block;
+        width: 100%;
+        max-width: 480px;
+        max-height: 450px;
+        object-fit: contain;
+    }
+
+/* Thông tin */
+
+.product-detail-page .product-detail-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-width: 0;
+}
+
+.product-detail-page .product-detail-brand {
+    margin: 0 0 8px;
+    color: #777;
+    font-size: 13px;
+}
+
+.product-detail-page .product-detail-info h1 {
+    margin: 0 0 14px;
+    color: #222;
+    font-size: 27px;
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+}
+
+.product-detail-page .product-detail-rating {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 18px;
+    color: #666;
+    font-size: 13px;
+}
+
+.product-detail-page .product-detail-price {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+    .product-detail-page .product-detail-price strong {
+        color: #e53935;
+        font-size: 28px;
+    }
+
+.product-detail-page .product-detail-old-price {
+    color: #999;
+    font-size: 14px;
+    text-decoration: line-through;
+}
+
+.product-detail-page .product-detail-discount {
+    padding: 4px 8px;
+    border-radius: 4px;
+    background: #fdeaea;
+    color: #e53935;
+    font-size: 13px;
+    text-decoration: none;
+}
+
+/* Tồn kho */
+
+.product-detail-page .product-detail-stock {
+    display: block;
+    width: fit-content;
+    margin-bottom: 24px;
+    padding: 7px 12px;
+    border-radius: 5px;
+    background: #e8f5e9;
+    color: #2e7d32;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+    .product-detail-page .product-detail-stock.low-stock {
+        background: #fff4e5;
+        color: #d97706;
+    }
+
+    .product-detail-page .product-detail-stock.out-of-stock {
+        background: #fdeaea;
+        color: #d32f2f;
+    }
+
+/* Số lượng */
+
+.product-detail-page .product-detail-quantity {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 18px;
+    margin-bottom: 22px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.product-detail-page .quantity-control {
+    display: flex;
+    align-items: center;
+}
+
+    .product-detail-page .quantity-control button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 42px;
+        padding: 0;
+        border: 1px solid #d1d5db;
+        background: #fff;
+        color: #333;
+        font-size: 20px;
+        cursor: pointer;
+    }
+
+        .product-detail-page .quantity-control button:hover:not(:disabled) {
+            background: #f3f6fa;
+        }
+
+    .product-detail-page .quantity-control input {
+        width: 65px;
+        height: 42px;
+        padding: 0 5px;
+        border: 1px solid #d1d5db;
+        border-right: none;
+        border-left: none;
+        border-radius: 0;
+        outline: none;
+        text-align: center;
+        font-size: 15px;
+    }
+
+        .product-detail-page .quantity-control input:focus {
+            border-color: #1e88e5;
+        }
+
+    .product-detail-page .quantity-control button:disabled {
+        background: #eee;
+        color: #999;
+        cursor: not-allowed;
+    }
+
+/* Nút mua hàng */
+
+.product-detail-page .product-detail-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+    .product-detail-page .product-detail-actions input[type="submit"],
+    .product-detail-page .product-detail-actions button {
+        min-height: 45px;
+        padding: 11px 22px;
+        border-radius: 6px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.2s, color 0.2s;
+    }
+
+.product-detail-page .add-detail-cart-btn {
+    border: 1px solid #1e88e5;
+    background: #fff;
+    color: #1e88e5;
+}
+
+    .product-detail-page .add-detail-cart-btn:hover {
+        background: #edf5ff;
+    }
+
+.product-detail-page .buy-now-btn {
+    border: 1px solid #1e88e5;
+    background: #1e88e5;
+    color: #fff;
+}
+
+    .product-detail-page .buy-now-btn:hover {
+        background: #1976d2;
+    }
+
+.product-detail-page .product-detail-actions input:disabled {
+    border-color: #ccc;
+    background: #ccc;
+    color: #666;
+    cursor: not-allowed;
+}
+
+.product-detail-page .product-detail-message {
+    display: block;
+    margin-top: 12px;
+    color: #1976d2;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+/* Mô tả và thông số */
+
+.product-detail-page .product-detail-section {
+    margin-top: 25px;
+    padding: 25px;
+    background: #fff;
+    border: 1px solid #edf0f4;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+    .product-detail-page .product-detail-section h2 {
+        margin: 0 0 18px;
+        padding-bottom: 13px;
+        border-bottom: 1px solid #edf0f4;
+        color: #222;
+        font-size: 20px;
+    }
+
+.product-detail-page #product-detail-description {
+    color: #555;
+    font-size: 14px;
+    line-height: 1.8;
+    overflow-wrap: anywhere;
+    white-space: pre-line;
+}
+
+.product-detail-page .product-specifications {
+    display: flex;
+    flex-direction: column;
+}
+
+.product-detail-page .specification-row {
+    display: grid;
+    grid-template-columns: 220px minmax(0, 1fr);
+    gap: 15px;
+    padding: 13px 12px;
+    border-bottom: 1px solid #eef0f3;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+    .product-detail-page .specification-row:nth-child(odd) {
+        background: #f8fafc;
+    }
+
+    .product-detail-page .specification-row:last-child {
+        border-bottom: none;
+    }
+
+.product-detail-page .spec-key {
+    color: #555;
+    font-weight: 600;
+    overflow-wrap: anywhere;
+}
+
+.product-detail-page .spec-value {
+    color: #333;
+    overflow-wrap: anywhere;
+}
+
+.product-detail-page .product-detail-not-found {
+    padding: 75px 20px;
+    background: #fff;
+    border-radius: 12px;
+    text-align: center;
+}
+
+    .product-detail-page .product-detail-not-found h2 {
+        color: #172554;
+    }
+
+    .product-detail-page .product-detail-not-found a {
+        display: inline-block;
+        margin-top: 12px;
+        color: #1e88e5;
+        text-decoration: none;
+    }
+
+/* Responsive */
+
+@media (max-width: 800px) {
+    .product-detail-page .product-detail-main {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 15px;
+        padding: 20px;
+    }
+
+    .product-detail-page .product-detail-image {
+        min-height: 300px;
+    }
+
+    .product-detail-page .product-detail-info h1 {
+        font-size: 23px;
+    }
+
+    .product-detail-page .product-detail-price strong {
+        font-size: 24px;
+    }
+}
+
+@media (max-width: 500px) {
+    .product-detail-page {
+        padding: 20px 12px 40px;
+    }
+
+        .product-detail-page .product-detail-main,
+        .product-detail-page .product-detail-section {
+            padding: 16px;
+        }
+
+        .product-detail-page .product-detail-image {
+            min-height: 230px;
+            padding: 10px;
+        }
+
+        .product-detail-page .product-detail-actions {
+            flex-direction: column;
+        }
+
+            .product-detail-page .product-detail-actions input[type="submit"] {
+                width: 100%;
+            }
+
+        .product-detail-page .specification-row {
+            grid-template-columns: minmax(0, 1fr);
+            gap: 4px;
+        }
+}
