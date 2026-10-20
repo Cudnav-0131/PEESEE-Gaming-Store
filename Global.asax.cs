@@ -4,7 +4,7 @@ using System.Web;
 using PEESEE_GAMING.Models;
 using System.Web.Routing;
 using System.Web.Optimization;
-using PEESEE_GAMING.Models;
+using System.Security.Cryptography;
 
 namespace PEESEE_GAMING
 {
@@ -18,9 +18,43 @@ namespace PEESEE_GAMING
 
             Application["Products"] = ProductData.GetProducts();
 
+            Application["Orders"] = new List<StoreOrder>();
+
             Application["Users"] = new List<StoreUser>();
 
-            Application["Orders"] = new List<StoreOrder>();
+            var users = new List<StoreUser>();
+
+            users.Add(new StoreUser
+            {
+                Id = Guid.NewGuid().ToString(),
+                FullName = "Quản trị viên",
+                Email = "admin@peesee.local",
+                PasswordHash = HashPasswordForSeed("Admin@123"),
+                Phone = "",
+                Address = "",
+                Role = "admin"
+            });
+
+            Application["Users"] = users;
+        }
+        private string HashPasswordForSeed(string password)
+        {
+            byte[] salt = new byte[16];
+
+            using (var rng = RandomNumberGenerator.Create())
+            {
+                rng.GetBytes(salt);
+            }
+
+            using (var derive = new Rfc2898DeriveBytes(
+                password, salt, 100000))
+            {
+                byte[] hash = derive.GetBytes(32);
+
+                return Convert.ToBase64String(salt)
+                    + "."
+                    + Convert.ToBase64String(hash);
+            }
         }
     }
 }

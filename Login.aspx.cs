@@ -43,12 +43,25 @@ namespace PEESEE_GAMING
                 return;
             }
 
-            // Lưu tài khoản đang đăng nhập
+
             Session["CurrentUser"] = user;
 
-            // Chuyển về trang chủ
+            // Phân biệt tài khoản Admin và tài khoản thông thường.
+            if (string.Equals(
+                user.Role,
+                "admin",
+                StringComparison.OrdinalIgnoreCase))
+            {
+                Response.Redirect("~/Admin/Admin.aspx", false);
+                Context.ApplicationInstance.CompleteRequest();
+                return;
+            }
+
+            // Người dùng thông thường chuyển về trang chủ.
             Response.Redirect("~/Default.aspx", false);
             Context.ApplicationInstance.CompleteRequest();
+            return;
+
         }
 
         private bool VerifyPassword(string password, string storedHash)
