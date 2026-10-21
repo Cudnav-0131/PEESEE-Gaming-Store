@@ -1,10 +1,11 @@
-﻿using System;
+﻿using PEESEE_GAMING.Models;
+using System;
 using System.Collections.Generic;
-using System.Web;
-using PEESEE_GAMING.Models;
-using System.Web.Routing;
-using System.Web.Optimization;
+using System.Linq;
 using System.Security.Cryptography;
+using System.Web;
+using System.Web.Optimization;
+using System.Web.Routing;
 
 namespace PEESEE_GAMING
 {
@@ -17,6 +18,13 @@ namespace PEESEE_GAMING
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
             Application["Products"] = ProductData.GetProducts();
+            var products = Application["Products"] as List<PEESEE_GAMING.Models.Product>;
+
+            Application["Categories"] = products
+                .Where(p => !string.IsNullOrWhiteSpace(p.Category))
+                .Select(p => p.Category.Trim())
+                .Distinct(StringComparer.OrdinalIgnoreCase)
+                .ToList();
 
             Application["Orders"] = new List<StoreOrder>();
 

@@ -182,6 +182,7 @@
     <Content Include="Login.aspx" />
     <Content Include="ProductDetail.aspx" />
     <Content Include="Register.aspx" />
+    <Content Include="Scripts\admin-customers.js" />
     <Content Include="Scripts\admin-navigation.js" />
     <Content Include="Scripts\admin-revenue-chart.js" />
     <Content Include="Scripts\bootstrap.bundle.js" />

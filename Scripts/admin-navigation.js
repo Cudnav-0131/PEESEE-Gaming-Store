@@ -137,3 +137,52 @@ document.addEventListener("DOMContentLoaded", function () {
         overlay.addEventListener("click", closeAddProductModal);
     }
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+    const openBtn = document.getElementById("btnOpenCategoryModal");
+    const modal = document.getElementById("categoryModal");
+    const closeBtn = document.getElementById("btnCloseCategoryModal");
+    const cancelBtn = document.getElementById("btnCancelCategoryModal");
+    const input = document.getElementById("txtNewCategory");
+    const error = document.getElementById("categoryModalError");
+
+    if (!openBtn || !modal) {
+        return;
+    }
+
+    function openModal() {
+        modal.classList.add("show");
+        error.textContent = "";
+        input.value = "";
+        setTimeout(function () {
+            input.focus();
+        }, 100);
+    }
+
+    function closeModal() {
+        modal.classList.remove("show");
+        error.textContent = "";
+    }
+
+    openBtn.addEventListener("click", openModal);
+
+    if (closeBtn) {
+        closeBtn.addEventListener("click", closeModal);
+    }
+
+    if (cancelBtn) {
+        cancelBtn.addEventListener("click", closeModal);
+    }
+
+    modal.addEventListener("click", function (event) {
+        if (event.target === modal) {
+            closeModal();
+        }
+    });
+
+    document.addEventListener("keydown", function (event) {
+        if (event.key === "Escape" && modal.classList.contains("show")) {
+            closeModal();
+        }
+    });
+});

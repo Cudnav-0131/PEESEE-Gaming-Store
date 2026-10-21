@@ -89,7 +89,8 @@ namespace PEESEE_GAMING
                 Phone = phone,
                 Address = address,
                 PasswordHash = HashPassword(password),
-                Role = "user"
+                Role = "user",
+                CreatedAt = DateTime.Now
             };
 
             users.Add(newUser);

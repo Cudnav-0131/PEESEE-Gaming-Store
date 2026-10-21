@@ -1528,3 +1528,849 @@
 @media (max-width: 700px) {
 
 }
+
+
+/* Popup thêm danh mục */
+#categoryModal.admin-modal-overlay {
+    display: none !important;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 99999;
+    background: rgba(0, 0, 0, 0.65);
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+    #categoryModal.admin-modal-overlay.show {
+        display: flex !important;
+    }
+
+.admin-modal {
+    width: 100%;
+    max-width: 460px;
+    background: #fff;
+    color: #222;
+    border-radius: 12px;
+    box-shadow: 0 15px 45px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    animation: categoryModalIn 0.2s ease-out;
+}
+
+.admin-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 22px;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+    .admin-modal-header h3 {
+        margin: 0;
+        font-size: 20px;
+    }
+
+.admin-modal-close {
+    border: none;
+    background: transparent;
+    font-size: 28px;
+    cursor: pointer;
+    color: #666;
+}
+
+.admin-modal-body {
+    padding: 22px;
+}
+
+    .admin-modal-body label {
+        display: block;
+        margin-bottom: 9px;
+        font-weight: 600;
+    }
+
+    .admin-modal-body input {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 12px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        font-size: 15px;
+        outline: none;
+    }
+
+        .admin-modal-body input:focus {
+            border-color: #e53935;
+            box-shadow: 0 0 0 2px rgba(229, 57, 53, 0.12);
+        }
+
+.admin-form-error {
+    color: #d32f2f;
+    font-size: 13px;
+    margin: 8px 0 0;
+}
+
+.admin-modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 15px 22px;
+    border-top: 1px solid #e5e5e5;
+}
+
+.admin-modal-cancel {
+    padding: 10px 16px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background: #fff;
+    cursor: pointer;
+}
+
+.admin-modal-footer .admin-add-btn {
+    padding: 10px 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+@keyframes categoryModalIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 480px) {
+    .admin-modal {
+        max-width: 100%;
+    }
+
+    .admin-modal-header,
+    .admin-modal-body,
+    .admin-modal-footer {
+        padding: 16px;
+    }
+}
+
+
+
+/* Nút khóa / mở khóa tài khoản */
+.btn-toggle-lock {
+    border: none;
+    border-radius: 8px;
+    padding: 9px 16px;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+    /* Khóa: đỏ nhạt */
+    .btn-toggle-lock.is-active {
+        background-color: #fee8e8;
+        color: #ef4444;
+    }
+
+        .btn-toggle-lock.is-active:hover {
+            background-color: #fecaca;
+            color: #dc2626;
+        }
+
+    /* Mở khóa: xanh nhạt */
+    .btn-toggle-lock.is-locked {
+        background-color: #e7f0ff;
+        color: #1683ff;
+    }
+
+        .btn-toggle-lock.is-locked:hover {
+            background-color: #d3e4ff;
+            color: #0969da;
+        }
+
+    .btn-toggle-lock:active {
+        transform: scale(0.97);
+    }
+
+/* ==============================
+   QUẢN LÝ KHÁCH HÀNG
+================================ */
+
+/* Khu vực tiêu đề và tìm kiếm */
+.admin-customers .admin-section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+}
+
+    .admin-customers .admin-section-header h2 {
+        margin-bottom: 6px;
+        color: #1f2937;
+        font-size: 24px;
+        font-weight: 700;
+    }
+
+    .admin-customers .admin-section-header p {
+        margin: 0;
+        color: #6b7280;
+        font-size: 14px;
+    }
+
+/* Ô tìm kiếm khách hàng */
+.admin-customers .customer-search-box {
+    width: 100%;
+    max-width: 320px;
+}
+
+.admin-customers #customer-search-input {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 11px 14px;
+    border: 1px solid #dbe1ea;
+    border-radius: 8px;
+    outline: none;
+    background: #fff;
+    color: #1f2937;
+    font-size: 14px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+    .admin-customers #customer-search-input:focus {
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12);
+    }
+
+/* Khung bảng */
+.admin-customers .admin-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    background: #fff;
+}
+
+/* Bảng khách hàng */
+.admin-customers .admin-table {
+    width: 100%;
+    min-width: 760px;
+    border-collapse: separate;
+    border-spacing: 0;
+    color: #374151;
+    font-size: 14px;
+}
+
+    /* Tiêu đề cột */
+    .admin-customers .admin-table thead th {
+        padding: 15px 18px;
+        background: #f8fafc;
+        color: #374151;
+        font-size: 14px;
+        font-weight: 700;
+        text-align: left;
+        white-space: nowrap;
+        border-bottom: 1px solid #e5e7eb;
+    }
+
+    /* Nội dung ô */
+    .admin-customers .admin-table tbody td {
+        padding: 16px 18px;
+        border-bottom: 1px solid #e5e7eb;
+        vertical-align: middle;
+    }
+
+    /* Bỏ đường kẻ ở hàng cuối */
+    .admin-customers .admin-table tbody tr:last-child td {
+        border-bottom: none;
+    }
+
+    /* Hiệu ứng khi rê chuột vào hàng */
+    .admin-customers .admin-table tbody tr:hover {
+        background-color: #f8fafc;
+    }
+
+    /* Cột thao tác */
+    .admin-customers .admin-table th:last-child,
+    .admin-customers .admin-table td:last-child {
+        white-space: nowrap;
+    }
+
+/* Nút Khóa / Mở khóa */
+.admin-customers .btn-toggle-lock {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 88px;
+    margin: 0;
+    padding: 9px 14px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+    .admin-customers .btn-toggle-lock.is-active {
+        background-color: #fee8e8;
+        color: #ef4444;
+    }
+
+        .admin-customers .btn-toggle-lock.is-active:hover {
+            background-color: #fecaca;
+            color: #dc2626;
+        }
+
+    .admin-customers .btn-toggle-lock.is-locked {
+        background-color: #e7f0ff;
+        color: #1683ff;
+    }
+
+        .admin-customers .btn-toggle-lock.is-locked:hover {
+            background-color: #d3e4ff;
+            color: #0969da;
+        }
+
+    .admin-customers .btn-toggle-lock:active {
+        transform: scale(0.97);
+    }
+
+/* Hiển thị tốt trên màn hình nhỏ */
+@media (max-width: 768px) {
+    .admin-customers .admin-section-header {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .admin-customers .customer-search-box {
+        max-width: none;
+    }
+}
+
+/* Cải thiện bảng quản lý khách hàng */
+.admin-customers .admin-table {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+    /* Căn giữa cột Thao tác */
+    .admin-customers .admin-table th:last-child,
+    .admin-customers .admin-table td:last-child {
+        text-align: center;
+        width: 140px;
+    }
+
+    /* Hiển thị mã tài khoản gọn gàng */
+    .admin-customers .admin-table td:first-child {
+        overflow-wrap: anywhere;
+        max-width: 300px;
+    }
+
+    /* Giữ ngày tạo trên một dòng */
+    .admin-customers .admin-table th:nth-child(5),
+    .admin-customers .admin-table td:nth-child(5) {
+        white-space: nowrap;
+    }
+
+/* Đồng bộ font chữ khu vực quản lý khách hàng */
+.admin-customers,
+.admin-customers h2,
+.admin-customers p,
+.admin-customers input,
+.admin-customers .admin-table {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+    /* Tiêu đề khu vực */
+    .admin-customers .admin-section-header h2 {
+        font-size: 26px;
+        font-weight: 700;
+        letter-spacing: -0.4px;
+    }
+
+    /* Mô tả dưới tiêu đề */
+    .admin-customers .admin-section-header p {
+        font-size: 14px;
+        line-height: 1.6;
+    }
+
+    /* Cải thiện độ rõ của bảng */
+    .admin-customers .admin-table thead th {
+        background: #f8fafc;
+        color: #1f2937;
+        font-weight: 700;
+    }
+
+    /* Màu chữ nội dung bảng */
+    .admin-customers .admin-table tbody td {
+        color: #374151;
+    }
+
+    /* Căn chỉnh nút thao tác */
+    .admin-customers .admin-table td:last-child {
+        text-align: center;
+    }
+
+    /* Hiệu ứng hover nhẹ */
+    .admin-customers .admin-table tbody tr:hover {
+        background-color: #f9fbff;
+    }
+
+
+/* ==============================
+   FONT CHUNG TOÀN BỘ TRANG ADMIN
+================================ */
+
+.admin-layout,
+.admin-layout *,
+.admin-page,
+.admin-page *,
+.admin-header,
+.admin-header *,
+.admin-sidebar,
+.admin-sidebar *,
+.admin-modal,
+.admin-modal *,
+.edit-product-modal,
+.edit-product-modal *,
+.add-product-modal,
+.add-product-modal *,
+.order-detail-modal,
+.order-detail-modal * {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+
+    /* ==================================
+   ĐỒNG BỘ NÚT BẤM TOÀN BỘ ADMIN
+================================== */
+
+    /* Font và hiệu ứng chung */
+    .admin-layout button,
+    .admin-layout input[type="button"],
+    .admin-layout input[type="submit"],
+    .admin-layout input[type="reset"] {
+        font-family: Arial, Helvetica, sans-serif;
+        transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease;
+    }
+
+    /* Nút chính */
+    .admin-layout .admin-add-btn,
+    .admin-layout .admin-save-btn {
+        min-height: 40px;
+        padding: 10px 18px;
+        border: 1px solid #1976d2;
+        border-radius: 8px;
+        background: #1976d2;
+        color: #fff;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+        .admin-layout .admin-add-btn:hover,
+        .admin-layout .admin-save-btn:hover {
+            background: #1565c0;
+            border-color: #1565c0;
+            box-shadow: 0 3px 8px rgba(25, 118, 210, 0.18);
+        }
+
+    /* Nút sửa */
+    .admin-layout .admin-edit-btn {
+        min-height: 36px;
+        padding: 8px 14px;
+        border-radius: 8px;
+        background: #e7f0ff;
+        color: #1976d2;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+        .admin-layout .admin-edit-btn:hover {
+            background: #d3e4ff;
+        }
+
+    /* Nút xóa */
+    .admin-layout .admin-delete-btn {
+        min-height: 36px;
+        padding: 8px 14px;
+        margin-left: 6px;
+        border-radius: 8px;
+        background: #fee8e8;
+        color: #dc2626;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+        .admin-layout .admin-delete-btn:hover {
+            background: #fecaca;
+        }
+
+    /* Nút xem chi tiết */
+    .admin-layout .admin-detail-btn {
+        min-height: 36px;
+        padding: 8px 14px;
+        border-radius: 8px;
+        background: #e7f0ff;
+        color: #1976d2;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+        .admin-layout .admin-detail-btn:hover {
+            background: #d3e4ff;
+        }
+
+    /* Nút hủy */
+    .admin-layout .admin-cancel-btn {
+        min-height: 40px;
+        padding: 10px 18px;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        background: #f3f4f6;
+        color: #374151;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+        .admin-layout .admin-cancel-btn:hover {
+            background: #e5e7eb;
+        }
+
+    /* Hiệu ứng khi nhấn */
+    .admin-layout button:active {
+        transform: scale(0.98);
+    }
+
+    /* Trạng thái bàn phím */
+    .admin-layout button:focus-visible {
+        outline: 3px solid rgba(59, 130, 246, 0.35);
+        outline-offset: 2px;
+    }
+
+
+/* ==================================
+   NÂNG CẤP THẺ THỐNG KÊ DASHBOARD
+================================== */
+
+.admin-dashboard {
+    gap: 22px;
+}
+
+.dashboard-card {
+    position: relative;
+    overflow: hidden;
+    padding: 24px;
+    border: 1px solid #e8edf4;
+    border-radius: 12px;
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.03);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+    .dashboard-card:hover {
+        transform: translateY(-3px);
+        border-color: #d7e5f8;
+        box-shadow: 0 8px 20px rgba(15, 23, 42, 0.07);
+    }
+
+.dashboard-card-info {
+    gap: 10px;
+}
+
+    .dashboard-card-info span {
+        color: #64748b;
+        font-size: 14px;
+        font-weight: 500;
+    }
+
+    .dashboard-card-info strong {
+        color: #1e293b;
+        font-size: 28px;
+        font-weight: 700;
+        line-height: 1.3;
+    }
+
+/* Thẻ biểu đồ doanh thu */
+.dashboard-chart-card {
+    padding: 26px;
+    border: 1px solid #e8edf4;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.03);
+}
+
+.dashboard-chart-header h2 {
+    color: #1e293b;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.dashboard-chart-header p {
+    color: #64748b;
+    line-height: 1.6;
+}
+
+/* Khung biểu đồ */
+.revenue-chart-box {
+    border-color: #edf0f5;
+    border-radius: 10px;
+    background: #f8fafc;
+}
+
+.revenue-chart {
+    border-radius: 8px;
+}
+
+/* Đơn hàng gần đây */
+.dashboard-recent-orders {
+    padding: 26px;
+    border: 1px solid #e8edf4;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.03);
+}
+
+.dashboard-recent-header h2 {
+    color: #1e293b;
+    font-weight: 700;
+}
+
+.dashboard-recent-header p {
+    color: #64748b;
+    line-height: 1.6;
+}
+
+.view-all-orders {
+    padding: 9px 13px;
+    border-radius: 7px;
+    transition: background-color 0.2s ease;
+}
+
+    .view-all-orders:hover {
+        background: #eff6ff;
+        text-decoration: none;
+    }
+
+/* Responsive */
+@media (max-width: 700px) {
+    .dashboard-card,
+    .dashboard-chart-card,
+    .dashboard-recent-orders {
+        padding: 18px;
+    }
+}
+
+/* ==================================
+   TINH CHỈNH DASHBOARD
+================================== */
+
+/* Khung biểu đồ doanh thu */
+.dashboard-chart-card {
+    padding: 24px;
+    border: 1px solid #e5eaf2;
+    border-radius: 14px;
+    background: #ffffff;
+    box-shadow: 0 3px 12px rgba(15, 23, 42, 0.035);
+}
+
+.dashboard-chart-header {
+    margin-bottom: 18px;
+}
+
+    .dashboard-chart-header h2 {
+        font-size: 21px;
+        font-weight: 700;
+        color: #1e293b;
+    }
+
+    .dashboard-chart-header p {
+        font-size: 14px;
+        color: #64748b;
+    }
+
+/* Giảm cảm giác khung biểu đồ quá trống */
+.revenue-chart-box {
+    height: 300px;
+    padding: 10px;
+    border: 1px solid #edf1f7;
+    border-radius: 10px;
+    background: #f8fafc;
+}
+
+.revenue-chart {
+    border-radius: 8px;
+    background: #ffffff;
+}
+
+/* Ô chọn khoảng thời gian */
+#revenue-period {
+    height: 40px;
+    min-width: 135px;
+    padding: 0 12px;
+    border: 1px solid #dbe2ea;
+    border-radius: 8px;
+    color: #334155;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+    #revenue-period:focus {
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+
+/* Màn hình nhỏ */
+@media (max-width: 700px) {
+    .dashboard-chart-card {
+        padding: 16px;
+    }
+
+    .revenue-chart-box {
+        height: 240px;
+        padding: 6px;
+    }
+}
+
+/* ==================================
+   THẺ THỐNG KÊ DASHBOARD
+================================== */
+
+.admin-dashboard {
+    gap: 22px;
+}
+
+.dashboard-card {
+    position: relative;
+    min-height: 132px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    padding: 24px 26px;
+    overflow: hidden;
+    border: 1px solid #e5eaf2;
+    border-radius: 14px;
+    background: #ffffff;
+    box-shadow: 0 3px 12px rgba(15, 23, 42, 0.035);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+    .dashboard-card:hover {
+        transform: translateY(-3px);
+        border-color: #cbdcf5;
+        box-shadow: 0 9px 22px rgba(15, 23, 42, 0.07);
+    }
+
+.dashboard-card-info {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+    .dashboard-card-info span {
+        color: #64748b;
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 1.5;
+    }
+
+    .dashboard-card-info strong {
+        color: #1e293b;
+        font-size: 30px;
+        font-weight: 700;
+        line-height: 1.2;
+        letter-spacing: -0.5px;
+    }
+
+/* Điều chỉnh trên màn hình nhỏ */
+@media (max-width: 700px) {
+    .dashboard-card {
+        min-height: 110px;
+        padding: 20px;
+    }
+
+    .dashboard-card-info strong {
+        font-size: 26px;
+    }
+}
+
+/* ==================================
+   NÂNG CẤP SIDEBAR ADMIN
+================================== */
+
+/* Logo */
+.admin-logo {
+    height: 112px;
+    flex-shrink: 0;
+}
+
+    .admin-logo img {
+        width: 88px;
+        transition: transform 0.2s ease;
+    }
+
+        .admin-logo img:hover {
+            transform: scale(1.04);
+        }
+
+/* Danh sách điều hướng */
+.admin-nav {
+    gap: 7px;
+    padding: 10px 12px;
+}
+
+/* Từng mục menu */
+.admin-nav-item {
+    min-height: 46px;
+    height: 46px;
+    padding: 0 14px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+    /* Biểu tượng menu */
+    .admin-nav-item img {
+        width: 19px;
+        height: 19px;
+        flex-basis: 19px;
+        opacity: 0.9;
+    }
+
+    /* Khi rê chuột */
+    .admin-nav-item:hover {
+        background: rgba(255, 255, 255, 0.09);
+        color: #ffffff;
+    }
+
+    /* Mục đang được chọn */
+    .admin-nav-item.active {
+        background: #344b70;
+        color: #ffffff;
+        box-shadow: inset 3px 0 0 #60a5fa;
+    }
+
+        .admin-nav-item.active img {
+            opacity: 1;
+        }
+
+/* Khu vực tài khoản phía dưới */
+.admin-account-btn {
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    border-radius: 9px;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+    .admin-account-btn:hover {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: rgba(255, 255, 255, 0.1);
+    }

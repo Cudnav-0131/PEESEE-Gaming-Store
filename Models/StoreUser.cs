@@ -20,5 +20,7 @@ namespace PEESEE_GAMING.Models
         public string Address { get; set; }
 
         public string Role { get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
+        public bool IsLocked { get; set; } = false;
     }
 }

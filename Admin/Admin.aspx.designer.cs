@@ -24,6 +24,24 @@ namespace PEESEE_GAMING.Admin
         protected global::System.Web.UI.HtmlControls.HtmlForm formAdmin;
 
         /// <summary>
+        /// hfCustomerId control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfCustomerId;
+
+        /// <summary>
+        /// btnToggleCustomerLock control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnToggleCustomerLock;
+
+        /// <summary>
         /// lblTotalProducts control.
         /// </summary>
         /// <remarks>
@@ -202,6 +220,24 @@ namespace PEESEE_GAMING.Admin
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Repeater rptAdminOrders;
+
+        /// <summary>
+        /// rptAdminCategories control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater rptAdminCategories;
+
+        /// <summary>
+        /// btnSaveCategory control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnSaveCategory;
 
         /// <summary>
         /// txtEditProductId control.

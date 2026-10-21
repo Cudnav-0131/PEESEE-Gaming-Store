@@ -54,6 +54,9 @@ namespace PEESEE_GAMING.Admin
                 BindAdminProducts();
                 BindAdminOrders();
                 BindRecentOrders();
+                BindAdminCategories();
+                BindAddProductCategories();
+                BindAdminCustomers();
             }
         }
 
@@ -487,8 +490,8 @@ namespace PEESEE_GAMING.Admin
 
                 string[] allowedExtensions =
                 {
-            ".jpg", ".jpeg", ".png", ".webp"
-        };
+                    ".jpg", ".jpeg", ".png", ".webp"
+                };
 
                 if (!allowedExtensions.Contains(extension))
                 {
@@ -599,6 +602,7 @@ namespace PEESEE_GAMING.Admin
 
             // Cập nhật bảng và Dashboard.
             BindAdminProducts();
+            BindAdminCategories();
             BindDashboard();
 
             // Xóa nội dung form sau khi lưu thành công.
@@ -898,5 +902,281 @@ namespace PEESEE_GAMING.Admin
                 serializer.Serialize(chartOrders);
         }
 
+
+        private void BindAdminCategories()
+        {
+            var categories = Application["Categories"] as List<string>;
+            var products = Application["Products"]
+                as List<PEESEE_GAMING.Models.Product>;
+
+            if (categories == null)
+            {
+                return;
+            }
+
+            var categoryData = categories
+                .Select(category => new
+                {
+                    Name = GetCategoryDisplayName(category),
+                    ProductCount = products == null
+                        ? 0
+                        : products.Count(p =>
+                            string.Equals(
+                                p.Category?.Trim(),
+                                category.Trim(),
+                                StringComparison.OrdinalIgnoreCase
+                            ))
+                })
+                .OrderBy(c => c.Name)
+                .ToList();
+
+            rptAdminCategories.DataSource = categoryData;
+            rptAdminCategories.DataBind();
+        }
+        private string GetCategoryDisplayName(string category)
+        {
+            switch (category.Trim().ToLower())
+            {
+                case "laptop":
+                    return "Laptop";
+
+                case "laptop-gaming":
+                    return "Laptop Gaming";
+
+                case "pc-ps":
+                    return "PC & PS";
+
+                case "components":
+                    return "Linh kiện máy tính";
+
+                case "case":
+                    return "Vỏ case";
+
+                case "speaker-microphone":
+                    return "Loa & Micro";
+
+                case "monitor":
+                    return "Màn hình";
+
+                case "keyboard":
+                    return "Bàn phím";
+
+                case "mouse-mousepad":
+                    return "Chuột & Lót chuột";
+
+                case "headphone":
+                    return "Tai nghe";
+
+                case "chair-desk":
+                    return "Ghế & Bàn Gaming";
+
+                default:
+                    return category;
+            }
+        }
+
+        protected void btnAddCategory_Click(object sender, EventArgs e)
+        {
+            string categoryName = Request.Form["txtNewCategory"]?.Trim() ?? "";
+
+            if (string.IsNullOrWhiteSpace(categoryName))
+            {
+                ClientScript.RegisterStartupScript(
+                    this.GetType(),
+                    "categoryEmpty",
+                    "alert('Vui lòng nhập tên danh mục!');",
+                    true
+                );
+                return;
+            }
+
+            var products = Application["Products"]
+                as List<PEESEE_GAMING.Models.Product>;
+
+            if (products == null)
+            {
+                ClientScript.RegisterStartupScript(
+                    this.GetType(),
+                    "categoryError",
+                    "alert('Không thể tải danh sách sản phẩm!');",
+                    true
+                );
+                return;
+            }
+
+            bool exists = products.Any(p =>
+                !string.IsNullOrWhiteSpace(p.Category) &&
+                string.Equals(
+                    GetCategoryDisplayName(p.Category).Trim(),
+                    categoryName,
+                    StringComparison.OrdinalIgnoreCase
+                )
+            );
+
+            if (exists)
+            {
+                ClientScript.RegisterStartupScript(
+                    this.GetType(),
+                    "categoryExists",
+                    "alert('Danh mục này đã tồn tại!');",
+                    true
+                );
+                return;
+            }
+
+            lock (Application)
+            {
+                var savedCategories = Application["Categories"] as List<string>;
+
+                if (savedCategories == null)
+                {
+                    savedCategories = new List<string>();
+                    Application["Categories"] = savedCategories;
+                }
+
+                bool alreadyExists = savedCategories.Any(c =>
+                    string.Equals(
+                        GetCategoryDisplayName(c).Trim(),
+                        categoryName,
+                        StringComparison.OrdinalIgnoreCase
+                    )
+                );
+
+                if (alreadyExists)
+                {
+                    ClientScript.RegisterStartupScript(
+                        this.GetType(),
+                        "categoryExistsAgain",
+                        "alert('Danh mục này đã tồn tại!');",
+                        true
+                    );
+                    return;
+                }
+
+                savedCategories.Add(categoryName);
+            }
+
+            BindAdminCategories();
+            BindAddProductCategories();
+
+            ClientScript.RegisterStartupScript(
+                this.GetType(),
+                "categoryAdded",
+                "alert('Đã thêm danh mục thành công!');" +
+                "document.getElementById('categoryModal').classList.remove('show');" +
+                "document.getElementById('txtNewCategory').value = '';",
+                true
+            );
+        }
+
+        private void BindAddProductCategories()
+        {
+            var categories = Application["Categories"] as List<string>;
+
+            ddlAddProductCategory.Items.Clear();
+
+            ddlAddProductCategory.Items.Add(
+                new ListItem("-- Chọn danh mục --", "")
+            );
+
+            if (categories == null)
+            {
+                return;
+            }
+
+            foreach (string category in categories)
+            {
+                if (string.IsNullOrWhiteSpace(category))
+                {
+                    continue;
+                }
+
+                string categoryName = GetCategoryDisplayName(category);
+
+                ddlAddProductCategory.Items.Add(
+                    new ListItem(categoryName, category)
+                );
+            }
+        }
+
+        private void BindAdminCustomers()
+        {
+            var users = Application["Users"] as List<StoreUser>;
+
+            if (users == null)
+            {
+                users = new List<StoreUser>();
+            }
+
+            var customers = users
+                .Where(u => u != null &&
+                            string.Equals(
+                                u.Role,
+                                "user",
+                                StringComparison.OrdinalIgnoreCase))
+                .Select(u => new
+                {
+                    u.Id,
+                    u.FullName,
+                    u.Email,
+                    u.Role,
+                    u.IsLocked,
+                    CreatedAt = u.CreatedAt.ToString("dd/MM/yyyy HH:mm")
+                })
+                .ToList();
+
+            System.Web.Script.Serialization.JavaScriptSerializer serializer =
+                new System.Web.Script.Serialization.JavaScriptSerializer();
+
+            string json = serializer.Serialize(customers);
+
+            string script =
+                "window.adminCustomers = " + json + ";";
+
+            ClientScript.RegisterStartupScript(
+                this.GetType(),
+                "loadAdminCustomers",
+                script,
+                true);
+        }
+
+        protected void btnToggleCustomerLock_Click(object sender, EventArgs e)
+        {
+            string customerId = hfCustomerId.Value;
+
+            if (string.IsNullOrWhiteSpace(customerId))
+            {
+                return;
+            }
+
+            var users = Application["Users"] as List<StoreUser>;
+
+            if (users == null)
+            {
+                return;
+            }
+
+            var customer = users.FirstOrDefault(u =>
+                u != null &&
+                string.Equals(
+                    u.Id,
+                    customerId,
+                    StringComparison.Ordinal));
+
+            // Chỉ cho phép khóa/mở khóa tài khoản khách hàng.
+            if (customer == null ||
+                !string.Equals(
+                    customer.Role,
+                    "user",
+                    StringComparison.OrdinalIgnoreCase))
+            {
+                return;
+            }
+
+            customer.IsLocked = !customer.IsLocked;
+            Application["Users"] = users;
+
+            BindAdminCustomers();
+        }
     }
 }

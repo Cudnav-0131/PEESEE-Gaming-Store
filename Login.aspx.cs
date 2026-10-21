@@ -42,7 +42,12 @@ namespace PEESEE_GAMING
                 ShowMessage("Email hoặc mật khẩu không chính xác.");
                 return;
             }
-
+            // Kiểm tra trạng thái tài khoản
+            if (user.IsLocked)
+            {
+                ShowMessage("Tài khoản của bạn đã bị khóa. Vui lòng liên hệ quản trị viên.");
+                return;
+            }
 
             Session["CurrentUser"] = user;
 

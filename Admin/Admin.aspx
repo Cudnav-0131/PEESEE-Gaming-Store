@@ -15,6 +15,17 @@
 
 <body>
     <form id="formAdmin" runat="server" enctype="multipart/form-data">
+        <asp:HiddenField
+            ID="hfCustomerId"
+            runat="server"
+            ClientIDMode="Static" />
+
+        <asp:Button
+            ID="btnToggleCustomerLock"
+            runat="server"
+            Text="Cập nhật trạng thái"
+            OnClick="btnToggleCustomerLock_Click"
+            Style="display:none;" />
         <div class="admin-layout">
 
             <!-- SIDEBAR -->
@@ -365,22 +376,13 @@
 
                                         <div class="form-group">
                                             <label for="ddlAddProductCategory">Danh mục</label>
+                                            
                                             <asp:DropDownList ID="ddlAddProductCategory"
                                                 runat="server"
                                                 ClientIDMode="Static">
                                                 <asp:ListItem Value="">-- Chọn danh mục --</asp:ListItem>
-                                                <asp:ListItem Value="laptop">Laptop</asp:ListItem>
-                                                <asp:ListItem Value="laptop-gaming">Laptop Gaming</asp:ListItem>
-                                                <asp:ListItem Value="pc-ps">PC / PS</asp:ListItem>
-                                                <asp:ListItem Value="components">Linh kiện</asp:ListItem>
-                                                <asp:ListItem Value="case">Case</asp:ListItem>
-                                                <asp:ListItem Value="speaker-microphone">Loa / Micro</asp:ListItem>
-                                                <asp:ListItem Value="monitor">Màn hình</asp:ListItem>
-                                                <asp:ListItem Value="keyboard">Bàn phím</asp:ListItem>
-                                                <asp:ListItem Value="mouse-mousepad">Chuột / Lót chuột</asp:ListItem>
-                                                <asp:ListItem Value="headphone">Tai nghe</asp:ListItem>
-                                                <asp:ListItem Value="chair-desk">Ghế / Bàn</asp:ListItem>
                                             </asp:DropDownList>
+
                                         </div>
 
                                         <div class="form-group">
@@ -557,16 +559,15 @@
                                     <h2>Quản lý danh mục</h2>
                                     <p>Danh sách danh mục sản phẩm trong cửa hàng.</p>
                                 </div>
-
-                                <button type="button" class="admin-add-btn">
+                                                                
+                                <button type="button" class="admin-add-btn" id="btnOpenCategoryModal">
                                     + Thêm danh mục
                                 </button>
+
                             </div>
 
                             <div class="admin-table-wrapper">
-
                                 <table class="admin-table">
-
                                     <thead>
                                         <tr>
                                             <th>Danh mục</th>
@@ -575,14 +576,58 @@
                                         </tr>
                                     </thead>
 
-                                    <tbody id="admin-category-list">
+                                    <tbody>
+                                        <asp:Repeater ID="rptAdminCategories" runat="server">
+                                            <ItemTemplate>
+                                                <tr>
+                                                    <td><%#: Eval("Name") %></td>
+                                                    <td><%#: Eval("ProductCount") %></td>
+                                                    <td>
+                                                        <span class="status-badge status-active">
+                                                            Đang hoạt động
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            </ItemTemplate>
+                                        </asp:Repeater>
                                     </tbody>
-
                                 </table>
-
                             </div>
+                            <div class="admin-modal-overlay" id="categoryModal">
+                                <div class="admin-modal">
+                                    <div class="admin-modal-header">
+                                        <h3>Thêm danh mục mới</h3>
+                                        <button type="button" class="admin-modal-close"
+                                                id="btnCloseCategoryModal">&times;</button>
+                                    </div>
 
+                                    <div class="admin-modal-body">
+                                        <label for="txtNewCategory">Tên danh mục</label>
+                                        <input type="text" id="txtNewCategory"
+                                            name="txtNewCategory"
+                                            placeholder="Nhập tên danh mục..."
+                                            maxlength="100" />
+                                        <p id="categoryModalError" class="admin-form-error"></p>
+                                    </div>
+
+                                    <div class="admin-modal-footer">
+                                        <button type="button" class="admin-modal-cancel"
+                                                id="btnCancelCategoryModal">Hủy</button>
+                                        <asp:Button
+                                            ID="btnSaveCategory"
+                                            runat="server"
+                                            Text="Lưu danh mục"
+                                            CssClass="admin-add-btn"
+                                            OnClick="btnAddCategory_Click"
+                                            CausesValidation="false"
+                                            UseSubmitBehavior="true" />
+                                    </div>
+                                </div>
+                            </div>
                         </section>
+                        
+                        
+
                         <section class="admin-statistics admin-section hidden" id="statistics">
 
                             <div class="admin-section-header">
@@ -814,6 +859,7 @@
     </form>
     <script src="<%= ResolveUrl("~/Scripts/admin-navigation.js") %>"></script>
     <script src="<%= ResolveUrl("~/Scripts/admin-revenue-chart.js") %>"></script>
+    <script src="<%= ResolveUrl("~/Scripts/admin-customers.js") %>"></script>
 </body>
 
 </html>
