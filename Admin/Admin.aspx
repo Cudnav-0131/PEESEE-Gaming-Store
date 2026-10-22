@@ -506,7 +506,16 @@
                                                         </asp:DropDownList>
                                                     </td>
 
-                                                    <td>—</td>
+                                                    <td>
+                                                        <asp:Button
+                                                            ID="btnViewOrder"
+                                                            runat="server"
+                                                            Text="Chi tiết"
+                                                            CssClass="btn-view-order"
+                                                            CommandArgument='<%# Eval("Id") %>'
+                                                            OnClick="btnViewOrder_Click"
+                                                            CausesValidation="false" />
+                                                    </td>
                                                 </tr>
                                             </ItemTemplate>
                                         </asp:Repeater>
@@ -856,10 +865,12 @@
                 </div>
             </div>
         </div>
+        <script src="<%= ResolveUrl("~/Scripts/admin-navigation.js") %>"></script>
+        <script src="<%= ResolveUrl("~/Scripts/admin-revenue-chart.js") %>"></script>
+        <script src="<%= ResolveUrl("~/Scripts/admin-customers.js") %>"></script>
+        <script src="../Scripts/admin-order-detail.js"></script>
+        <script src="../Scripts/admin-statistics.js"></script>
     </form>
-    <script src="<%= ResolveUrl("~/Scripts/admin-navigation.js") %>"></script>
-    <script src="<%= ResolveUrl("~/Scripts/admin-revenue-chart.js") %>"></script>
-    <script src="<%= ResolveUrl("~/Scripts/admin-customers.js") %>"></script>
 </body>
 
 </html>

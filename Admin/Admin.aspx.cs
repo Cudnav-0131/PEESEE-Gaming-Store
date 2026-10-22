@@ -874,6 +874,7 @@ namespace PEESEE_GAMING.Admin
             }
         }
 
+
         private void BindRevenueOrdersJson()
         {
             List<StoreOrder> orders =
@@ -884,7 +885,6 @@ namespace PEESEE_GAMING.Admin
                 orders = new List<StoreOrder>();
             }
 
-            // Chỉ truyền những dữ liệu cần cho biểu đồ.
             var chartOrders = orders.Select(o => new
             {
                 createdAt = o.CreatedAt.ToString(
@@ -892,7 +892,17 @@ namespace PEESEE_GAMING.Admin
                     CultureInfo.InvariantCulture),
 
                 total = o.Total,
-                status = o.Status ?? ""
+                status = o.Status ?? "",
+
+                items = (o.Items ?? new List<StoreOrderItem>())
+                    .Select(item => new
+                    {
+                        productId = item.ProductId ?? "",
+                        productName = item.ProductName ?? "",
+                        quantity = item.Quantity,
+                        price = item.Price,
+                        subtotal = item.Subtotal
+                    }).ToList()
             }).ToList();
 
             JavaScriptSerializer serializer =
@@ -901,6 +911,7 @@ namespace PEESEE_GAMING.Admin
             hfRevenueOrdersJson.Value =
                 serializer.Serialize(chartOrders);
         }
+
 
 
         private void BindAdminCategories()
@@ -1177,6 +1188,148 @@ namespace PEESEE_GAMING.Admin
             Application["Users"] = users;
 
             BindAdminCustomers();
+        }
+
+        protected void btnViewOrder_Click(object sender, EventArgs e)
+        {
+            Button btn = sender as Button;
+
+            if (btn == null)
+                return;
+
+            string orderId = btn.CommandArgument;
+
+            List<StoreOrder> orders =
+                Application["Orders"] as List<StoreOrder>;
+
+            if (orders == null)
+                return;
+
+            StoreOrder order = orders.FirstOrDefault(
+                o => o.Id == orderId
+            );
+
+            if (order == null)
+            {
+                string errorScript =
+                    "alert('Không tìm thấy đơn hàng!');";
+
+                ClientScript.RegisterStartupScript(
+                    this.GetType(),
+                    "OrderNotFound",
+                    errorScript,
+                    true
+                );
+
+                return;
+            }
+
+            System.Text.StringBuilder html =
+                new System.Text.StringBuilder();
+
+            html.Append("<div class='order-info-grid'>");
+
+            html.Append("<div><strong>Mã đơn hàng</strong><span>");
+            html.Append(Server.HtmlEncode(order.Id ?? ""));
+            html.Append("</span></div>");
+
+            html.Append("<div><strong>Ngày đặt</strong><span>");
+            html.Append(order.CreatedAt.ToString("dd/MM/yyyy HH:mm"));
+            html.Append("</span></div>");
+
+            html.Append("<div><strong>Khách hàng</strong><span>");
+            html.Append(Server.HtmlEncode(order.CustomerName ?? ""));
+            html.Append("</span></div>");
+
+            html.Append("<div><strong>Số điện thoại</strong><span>");
+            html.Append(Server.HtmlEncode(order.Phone ?? ""));
+            html.Append("</span></div>");
+
+            html.Append("<div class='order-info-full'><strong>Địa chỉ</strong><span>");
+            html.Append(Server.HtmlEncode(order.Address ?? ""));
+            html.Append("</span></div>");
+
+            html.Append("<div><strong>Thanh toán</strong><span>");
+            html.Append(Server.HtmlEncode(order.PaymentMethod ?? ""));
+            html.Append("</span></div>");
+
+            html.Append("<div><strong>Trạng thái</strong><span>");
+            html.Append(Server.HtmlEncode(order.Status ?? ""));
+            html.Append("</span></div>");
+
+            html.Append("</div>");
+
+            html.Append("<h3 class='order-items-title'>Danh sách sản phẩm</h3>");
+            html.Append("<div class='order-items-table-wrapper'>");
+            html.Append("<table class='order-items-table'>");
+
+            html.Append("<thead><tr>");
+            html.Append("<th>Sản phẩm</th>");
+            html.Append("<th>Đơn giá</th>");
+            html.Append("<th>Số lượng</th>");
+            html.Append("<th>Thành tiền</th>");
+            html.Append("</tr></thead><tbody>");
+
+            if (order.Items != null && order.Items.Count > 0)
+            {
+                foreach (StoreOrderItem item in order.Items)
+                {
+                    html.Append("<tr>");
+
+                    html.Append("<td>");
+                    html.Append(Server.HtmlEncode(item.ProductName ?? ""));
+                    html.Append("</td>");
+
+                    html.Append("<td>");
+                    html.Append(item.Price.ToString("N0"));
+                    html.Append("đ</td>");
+
+                    html.Append("<td>");
+                    html.Append(item.Quantity);
+                    html.Append("</td>");
+
+                    html.Append("<td>");
+                    html.Append(item.Subtotal.ToString("N0"));
+                    html.Append("đ</td>");
+
+                    html.Append("</tr>");
+                }
+            }
+            else
+            {
+                html.Append("<tr><td colspan='4'>Đơn hàng chưa có sản phẩm.</td></tr>");
+            }
+
+            html.Append("</tbody></table></div>");
+
+            html.Append("<div class='order-detail-total'>");
+            html.Append("<span>Tổng tiền</span><strong>");
+            html.Append(order.Total.ToString("N0"));
+            html.Append("đ</strong></div>");
+
+            string content = System.Web.HttpUtility.JavaScriptStringEncode(
+                html.ToString()
+            );
+
+
+            string script =
+                "(function() {" +
+                "var contentElement = document.getElementById('order-detail-content');" +
+                "var modal = document.getElementById('order-detail-modal');" +
+                "if (!contentElement || !modal) {" +
+                "console.error('Không tìm thấy HTML modal hoặc vùng nội dung.');" +
+                "return;" +
+                "}" +
+                "contentElement.innerHTML = '" + content + "';" +
+                "modal.classList.remove('hidden');" +
+                "})();";
+
+            ClientScript.RegisterStartupScript(
+                this.GetType(),
+                "ShowOrderDetails",
+                script,
+                true
+            );
         }
     }
 }

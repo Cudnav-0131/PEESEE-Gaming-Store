@@ -2374,3 +2374,38 @@
         background: rgba(255, 255, 255, 0.1);
         border-color: rgba(255, 255, 255, 0.1);
     }
+
+/* =========================
+   ORDER DETAIL BUTTON
+========================= */
+
+.btn-view-order {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 9px 18px;
+    border: 1px solid transparent;
+    border-radius: 10px;
+    background: #e8f0ff;
+    color: #1677ff;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+    .btn-view-order:hover {
+        background: #d6e6ff;
+        color: #0958d9;
+    }
+
+    .btn-view-order:active {
+        background: #c6dcff;
+    }
+
+    .btn-view-order:focus-visible {
+        outline: 2px solid #91caff;
+        outline-offset: 2px;
+    }
