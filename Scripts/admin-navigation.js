@@ -36,7 +36,10 @@
                 item.dataset.section === sectionId
             );
         });
+        // Lưu tab hiện tại để khôi phục sau PostBack
+        sessionStorage.setItem("adminActiveSection", sectionId);
 
+        // Cập nhật URL
         history.replaceState(null, "", "#" + sectionId);
     }
 
@@ -57,14 +60,28 @@
             showSection("orders");
         });
     }
-
+    // Lấy tab từ URL
     const requestedSection = window.location.hash.substring(1);
 
-    const validSection = Array.from(navItems).some(function (item) {
-        return item.dataset.section === requestedSection;
+    // Lấy tab đã lưu trước khi PostBack
+    const savedSection = sessionStorage.getItem("adminActiveSection");
+
+    // Danh sách tab hợp lệ
+    const validSections = Array.from(navItems).map(function (item) {
+        return item.dataset.section;
     });
 
-    showSection(validSection ? requestedSection : "dashboard");
+    // Ưu tiên tab trên URL, nếu không có thì lấy tab đã lưu
+    let activeSection = validSections.includes(requestedSection)
+        ? requestedSection
+        : savedSection;
+
+    // Nếu không có tab hợp lệ thì mở Dashboard
+    if (!validSections.includes(activeSection)) {
+        activeSection = "dashboard";
+    }
+
+    showSection(activeSection);
 });
 
 document.addEventListener("DOMContentLoaded", function () {
