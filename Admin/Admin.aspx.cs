@@ -1400,5 +1400,13 @@ namespace PEESEE_GAMING.Admin
                 true
             );
         }
+        protected void btnAdminLogout_Click(object sender, EventArgs e)
+        {
+            Session.Clear();
+            Session.Abandon();
+
+            Response.Redirect("~/Default.aspx", false);
+            Context.ApplicationInstance.CompleteRequest();
+        }
     }
 }

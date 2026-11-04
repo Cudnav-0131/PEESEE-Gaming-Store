@@ -186,3 +186,32 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 });
+document.addEventListener("DOMContentLoaded", function () {
+    const accountButton = document.getElementById("admin-account-btn");
+    const accountMenu = document.getElementById("admin-account-menu");
+    const accountContainer = document.getElementById("admin-account");
+
+    if (!accountButton || !accountMenu || !accountContainer) {
+        return;
+    }
+
+    // Bấm nút tài khoản để mở hoặc đóng menu
+    accountButton.addEventListener("click", function (event) {
+        event.stopPropagation();
+        accountMenu.classList.toggle("hidden");
+    });
+
+    // Bấm ra ngoài khu vực tài khoản thì đóng menu
+    document.addEventListener("click", function (event) {
+        if (!accountContainer.contains(event.target)) {
+            accountMenu.classList.add("hidden");
+        }
+    });
+
+    // Nhấn Escape để đóng menu
+    document.addEventListener("keydown", function (event) {
+        if (event.key === "Escape") {
+            accountMenu.classList.add("hidden");
+        }
+    });
+});

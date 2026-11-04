@@ -90,9 +90,15 @@
 
                     <div id="admin-account-menu" class="admin-account-menu hidden">
 
-                        <button type="button" id="admin-logout-btn">
-                            Đăng xuất
-                        </button>
+                        <asp:Button
+                            ID="adminLogoutBtn"
+                            runat="server"
+                            ClientIDMode="Static"
+                            Text="Đăng xuất"
+                            CssClass="admin-logout-btn"
+                            OnClick="btnAdminLogout_Click"
+                            CausesValidation="false"
+                            UseSubmitBehavior="true" />
 
                     </div>
 

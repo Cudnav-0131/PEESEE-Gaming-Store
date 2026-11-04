@@ -4,8 +4,19 @@
     ContentPlaceHolderID="MainContent"
     runat="server">
 
-    <h1>PEESEE Gaming Store</h1>
-    <p>Sản phẩm nổi bật</p>
+    <!-- BANNER PEESEE GAMING STORE -->
+    <div class="peesee-hero-banner">
+        <a href="#featured-products" aria-label="Khám phá sản phẩm PEESEE Gaming Store">
+            <img
+                src="<%= ResolveUrl("~/Images/peesee-banner.png") %>"
+                alt="PEESEE GAMING STORE - Play, Upgrade, Win" />
+        </a>
+    </div>
+
+    <div id="featured-products" class="featured-products-title">
+        <h2>Sản phẩm nổi bật</h2>
+        <p>Khám phá các thiết bị gaming dành cho bạn</p>
+    </div>
 
     <div class="product-list">
 
@@ -185,6 +196,67 @@
             background: #ccc;
             color: #666;
             cursor: not-allowed;
+        }
+        /* ===== PEESEE GAMING STORE BANNER ===== */
+
+        .peesee-hero-banner {
+            width: 100%;
+            aspect-ratio: 16 / 6.2;
+            overflow: hidden;
+            border-radius: 14px;
+            margin-bottom: 35px;
+            background: #020817;
+            box-shadow: 0 8px 25px rgba(0, 120, 255, 0.15);
+        }
+
+        .peesee-hero-banner a {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        .peesee-hero-banner img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            transition: transform 0.4s ease;
+        }
+
+        .peesee-hero-banner:hover img {
+            transform: scale(1.02);
+        }
+
+        /* Tiêu đề sản phẩm */
+        .featured-products-title {
+            margin-bottom: 20px;
+        }
+
+        .featured-products-title h2 {
+            margin: 0 0 8px;
+            color: #172554;
+            font-size: 26px;
+            font-weight: 700;
+        }
+
+        .featured-products-title p {
+            margin: 0;
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        /* Responsive điện thoại */
+        @media (max-width: 600px) {
+            .peesee-hero-banner {
+                aspect-ratio: 16 / 9;
+                border-radius: 8px;
+                margin-bottom: 24px;
+            }
+
+            .featured-products-title h2 {
+                font-size: 21px;
+            }
         }
     </style>
 

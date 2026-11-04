@@ -1440,38 +1440,46 @@
 }
 
 /* Menu đăng xuất */
-
 .admin-account-menu {
     position: absolute;
     left: 0;
     right: 0;
     bottom: calc(100% + 8px);
     padding: 6px;
-    background: #fff;
-    border: 1px solid #e5e7eb;
-    border-radius: 7px;
-    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.15);
+    background: #101827;
+    border: 1px solid #164e63;
+    border-radius: 8px;
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.3);
+    z-index: 9999;
 }
 
+    /* Ẩn menu */
     .admin-account-menu.hidden {
-        display: none;
+        display: none !important;
     }
 
-    .admin-account-menu button {
+    /* Nút đăng xuất */
+    .admin-account-menu .admin-logout-btn {
+        display: block;
         width: 100%;
-        padding: 10px 12px;
-        border: none;
-        border-radius: 5px;
-        background: transparent;
-        color: #dc2626;
+        padding: 11px 12px;
+        border: 1px solid transparent;
+        border-radius: 6px;
+        background: #123044;
+        color: #38bdf8;
         text-align: left;
         font-size: 13px;
         font-weight: 600;
         cursor: pointer;
+        transition: all 0.25s ease;
     }
 
-        .admin-account-menu button:hover {
-            background: #fef2f2;
+        /* Hiệu ứng hover */
+        .admin-account-menu .admin-logout-btn:hover {
+            background: rgba(6, 182, 212, 0.2);
+            border-color: #22d3ee;
+            color: #67e8f9;
+            box-shadow: 0 0 12px rgba(34, 211, 238, 0.2);
         }
 
 /* =========================
@@ -2408,4 +2416,44 @@
     .btn-view-order:focus-visible {
         outline: 2px solid #91caff;
         outline-offset: 2px;
+    }
+
+
+/* ===== ADMIN LOGOUT BUTTON - GAMING CYAN ===== */
+
+.admin-account-menu {
+    background: #101d35 !important;
+    border: 1px solid #22d3ee !important;
+    border-radius: 9px !important;
+    padding: 7px !important;
+    box-shadow: 0 0 15px rgba(34, 211, 238, 0.15) !important;
+}
+
+    /* Áp dụng cho ASP.NET Button */
+    .admin-account-menu input[type="submit"],
+    .admin-account-menu .admin-logout-btn {
+        display: block !important;
+        width: 100% !important;
+        padding: 11px 14px !important;
+        background: #123653 !important;
+        color: #38bdf8 !important;
+        border: 1px solid #164e63 !important;
+        border-radius: 7px !important;
+        font-size: 13px !important;
+        font-weight: 600 !important;
+        text-align: left !important;
+        cursor: pointer !important;
+        transition: all 0.25s ease !important;
+    }
+
+        .admin-account-menu input[type="submit"]:hover,
+        .admin-account-menu .admin-logout-btn:hover {
+            background: #075985 !important;
+            color: #a5f3fc !important;
+            border-color: #22d3ee !important;
+            box-shadow: 0 0 12px rgba(34, 211, 238, 0.3) !important;
+        }
+
+    .admin-account-menu.hidden {
+        display: none !important;
     }
