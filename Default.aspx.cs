@@ -58,32 +58,109 @@ namespace PEESEE_GAMING
                 rptProducts.DataBind();
             }
         }
+
         protected void rptProducts_ItemCommand(
             object source,
             RepeaterCommandEventArgs e)
         {
-            if (e.CommandName == "AddToCart")
+            if (e.CommandName != "AddToCart")
+                return;
+
+            string productId = Convert.ToString(e.CommandArgument);
+
+            if (string.IsNullOrWhiteSpace(productId))
+                return;
+
+            string errorMessage = null;
+
+            Application.Lock();
+
+            try
             {
-                string productId = Convert.ToString(e.CommandArgument);
+                var products =
+                    Application["Products"] as List<Product>;
 
-                var cart = Session["Cart"] as Dictionary<string, int>;
-
-                if (cart == null)
+                if (products == null)
                 {
-                    cart = new Dictionary<string, int>();
-                }
-
-                if (cart.ContainsKey(productId))
-                {
-                    cart[productId]++;
+                    errorMessage = "Không tìm thấy dữ liệu sản phẩm.";
                 }
                 else
                 {
-                    cart[productId] = 1;
-                }
+                    Product product = products.FirstOrDefault(p =>
+                        string.Equals(
+                            p.Id,
+                            productId,
+                            StringComparison.OrdinalIgnoreCase));
 
-                Session["Cart"] = cart;
+                    if (product == null)
+                    {
+                        errorMessage = "Sản phẩm không tồn tại.";
+                    }
+                    else
+                    {
+                        var cart =
+                            Session["Cart"] as Dictionary<string, int>
+                            ?? new Dictionary<string, int>();
+
+                        // Tìm sản phẩm đã có trong giỏ hàng
+                        string cartKey = cart.Keys.FirstOrDefault(k =>
+                            string.Equals(
+                                k,
+                                productId,
+                                StringComparison.OrdinalIgnoreCase));
+
+                        int currentQuantity = cartKey == null
+                            ? 0
+                            : cart[cartKey];
+
+                        // Kiểm tra tồn kho trước khi thêm
+                        if (product.Stock <= 0)
+                        {
+                            errorMessage = "Sản phẩm đã hết hàng.";
+                        }
+                        else if (currentQuantity >= product.Stock)
+                        {
+                            errorMessage =
+                                "Sản phẩm \"" + product.Name +
+                                "\" chỉ còn " + product.Stock +
+                                " sản phẩm trong kho. Bạn không thể thêm thêm.";
+                        }
+                        else
+                        {
+                            if (cartKey == null)
+                            {
+                                cart[productId] = 1;
+                            }
+                            else
+                            {
+                                cart[cartKey]++;
+                            }
+
+                            Session["Cart"] = cart;
+                        }
+                    }
+                }
             }
-        }
+            finally
+            {
+                Application.UnLock();
+            }
+
+            // Thông báo nếu không thể thêm sản phẩm
+            if (errorMessage != null)
+            {
+                string script =
+                    "alert('" +
+                    System.Web.HttpUtility.JavaScriptStringEncode(
+                        errorMessage) +
+                    "');";
+
+                ClientScript.RegisterStartupScript(
+                    GetType(),
+                    "AddToCartError",
+                    script,
+                    true);
+            }
+        } 
     }
 }

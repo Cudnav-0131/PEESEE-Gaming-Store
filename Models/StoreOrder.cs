@@ -19,6 +19,7 @@ namespace PEESEE_GAMING.Models
         public decimal Total { get; set; }
 
         public string Status { get; set; }
+        public bool IsStockRestored { get; set; }
 
         public DateTime CreatedAt { get; set; }
 

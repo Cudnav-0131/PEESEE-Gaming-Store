@@ -772,6 +772,7 @@ namespace PEESEE_GAMING.Admin
             }
         }
 
+
         protected void ddlOrderStatus_SelectedIndexChanged(
             object sender,
             EventArgs e)
@@ -779,45 +780,37 @@ namespace PEESEE_GAMING.Admin
             DropDownList ddl = sender as DropDownList;
 
             if (ddl == null)
-            {
                 return;
-            }
 
             RepeaterItem item = ddl.NamingContainer as RepeaterItem;
 
             if (item == null)
-            {
                 return;
-            }
 
             HiddenField hfOrderId =
                 item.FindControl("hfAdminOrderId") as HiddenField;
 
             if (hfOrderId == null ||
                 string.IsNullOrWhiteSpace(hfOrderId.Value))
-            {
                 return;
-            }
 
             string orderId = hfOrderId.Value;
             string newStatus = ddl.SelectedValue;
 
-            // Chỉ chấp nhận những trạng thái hợp lệ.
             string[] allowedStatuses =
             {
-                "pending",
-                "processing",
-                "shipping",
-                "completed",
-                "cancelled"
-            };
+        "pending",
+        "processing",
+        "shipping",
+        "completed",
+        "cancelled"
+    };
 
             if (!allowedStatuses.Contains(newStatus))
-            {
                 return;
-            }
 
             bool updated = false;
+            string errorMessage = null;
 
             Application.Lock();
 
@@ -826,7 +819,14 @@ namespace PEESEE_GAMING.Admin
                 List<StoreOrder> orders =
                     Application["Orders"] as List<StoreOrder>;
 
-                if (orders != null)
+                List<Product> products =
+                    Application["Products"] as List<Product>;
+
+                if (orders == null || products == null)
+                {
+                    errorMessage = "Dữ liệu đơn hàng hoặc sản phẩm chưa được khởi tạo.";
+                }
+                else
                 {
                     StoreOrder order = orders.FirstOrDefault(o =>
                         string.Equals(
@@ -834,11 +834,72 @@ namespace PEESEE_GAMING.Admin
                             orderId,
                             StringComparison.OrdinalIgnoreCase));
 
-                    if (order != null)
+                    if (order == null)
                     {
-                        order.Status = newStatus;
-                        Application["Orders"] = orders;
-                        updated = true;
+                        errorMessage = "Không tìm thấy đơn hàng.";
+                    }
+                    else if (order.IsStockRestored &&
+                             !string.Equals(
+                                 newStatus,
+                                 "cancelled",
+                                 StringComparison.OrdinalIgnoreCase))
+                    {
+                        errorMessage =
+                            "Đơn hàng đã hủy và không thể chuyển sang trạng thái khác.";
+                    }
+                    else
+                    {
+                        // Chỉ khôi phục kho một lần khi đơn được hủy.
+                        if (newStatus == "cancelled" &&
+                            !order.IsStockRestored)
+                        {
+                            List<StoreOrderItem> orderItems =
+                                order.Items ?? new List<StoreOrderItem>();
+
+                            // Kiểm tra toàn bộ sản phẩm trước khi cộng kho.
+                            foreach (StoreOrderItem orderItem in orderItems)
+                            {
+                                Product product = products.FirstOrDefault(p =>
+                                    string.Equals(
+                                        Convert.ToString(p.Id),
+                                        Convert.ToString(orderItem.ProductId),
+                                        StringComparison.OrdinalIgnoreCase));
+
+                                if (product == null || orderItem.Quantity <= 0)
+                                {
+                                    errorMessage =
+                                        "Không thể khôi phục kho vì dữ liệu sản phẩm trong đơn hàng không hợp lệ.";
+                                    break;
+                                }
+                            }
+
+                            // Chỉ cộng kho khi tất cả sản phẩm hợp lệ.
+                            if (errorMessage == null)
+                            {
+                                foreach (StoreOrderItem orderItem in orderItems)
+                                {
+                                    Product product = products.First(p =>
+                                        string.Equals(
+                                            Convert.ToString(p.Id),
+                                            Convert.ToString(orderItem.ProductId),
+                                            StringComparison.OrdinalIgnoreCase));
+
+                                    product.Stock += orderItem.Quantity;
+                                }
+
+                                order.IsStockRestored = true;
+                            }
+                        }
+
+                        if (errorMessage == null)
+                        {
+                            order.Status = newStatus;
+
+                            Application["Products"] = products;
+                            Application["Orders"] = orders;
+
+                            updated = true;
+                        }
                     }
                 }
             }
@@ -849,11 +910,10 @@ namespace PEESEE_GAMING.Admin
 
             if (updated)
             {
+                BindAdminProducts();
                 BindAdminOrders();
                 BindDashboard();
                 BindRecentOrders();
-
-                // Cập nhật dữ liệu cho biểu đồ doanh thu
                 BindRevenueOrdersJson();
 
                 ClientScript.RegisterStartupScript(
@@ -864,12 +924,21 @@ namespace PEESEE_GAMING.Admin
             }
             else
             {
+                BindAdminProducts();
                 BindAdminOrders();
+
+                string message = errorMessage ??
+                    "Không thể cập nhật trạng thái đơn hàng.";
+
+                string script =
+                    "alert('" +
+                    System.Web.HttpUtility.JavaScriptStringEncode(message) +
+                    "');";
 
                 ClientScript.RegisterStartupScript(
                     GetType(),
                     "UpdateOrderStatusError" + Guid.NewGuid().ToString("N"),
-                    "alert('Không tìm thấy đơn hàng cần cập nhật.');",
+                    script,
                     true);
             }
         }
